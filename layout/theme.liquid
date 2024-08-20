@@ -34,7 +34,9 @@
 
     {{ 'application.css' |  asset_url |  stylesheet_tag }}
 
-    <!-- Custom CSS or JS -->
+    <!-- Dynamic JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
 
 </head>
 <body>
@@ -44,5 +46,7 @@
         {{content_for_layout}} 
     </main>
 
+    <!-- Dynamic JS -->
+    <script src="{{ 'application.js' | asset_url }}" defer></script>
 </body>
 </html>
