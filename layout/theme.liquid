@@ -3,11 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Your Page Title</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
-    <!-- Add any additional meta tags, fonts, or stylesheets here -->
-    {{content_for_header}}
+    <title>{{ page_title }} - {{ shop.name }}</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ 'favicon.ico' | asset_url }}" type="image/x-icon">
+
+    <!-- Dynamic Meta Tags -->
+    {% if template contains 'product' %}
+        <meta name="description" content="{{ product.description | strip_html | truncate: 160 }}">
+        <meta property="og:title" content="{{ product.title }} - {{ shop.name }}">
+        <meta property="og:description" content="{{ product.description | strip_html | truncate: 160 }}">
+        <meta property="og:image" content="{{ product.featured_image | image_url: 'large' }}">
+    {% elsif template contains 'collection' %}
+        <meta name="description" content="{{ collection.description | strip_html | truncate: 160 }}">
+        <meta property="og:title" content="{{ collection.title }} - {{ shop.name }}">
+        <meta property="og:description" content="{{ collection.description | strip_html | truncate: 160 }}">
+        <meta property="og:image" content="{{ collection.image | image_url: 'large' }}">
+    {% else %}
+        <meta name="description" content="{{ shop.meta_description }}">
+        <meta property="og:title" content="{{ page_title }} - {{ shop.name }}">
+        <meta property="og:description" content="{{ shop.meta_description }}">
+        <meta property="og:image" content="{{ 'default-logo.png' | asset_url }}">
+    {% endif %}
+
+    <!-- Dynamic CSS -->
+    {% if template contains 'product' %}
+        <link rel="stylesheet" href="{{ 'product.css' | asset_url }}">
+    {% elsif template contains 'collection' %}
+        <link rel="stylesheet" href="{{ 'collection.css' | asset_url }}">
+    {% else %}
+        <link rel="stylesheet" href="{{ 'main.css' | asset_url }}">
+    {% endif %}
+
+    <!-- Additional Scripts or Styles -->
+    {{ content_for_header }}
+
+    <!-- Custom CSS or JS -->
+    {{ page.metafields.custom.head_code }}
+
 </head>
 <body>
 
