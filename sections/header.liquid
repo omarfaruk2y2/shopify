@@ -1,13 +1,26 @@
-<div>
+<div class="bg-black"> 
   <div>
     <div>
       <!-- store logo -->
        <div>
-
+          <h1>{{ shop.name }}</h1>
        </div>
       <!-- navigation menu -->
        <div>
-
+          {% for link in section.settings.menu.links   %}
+              {% if link.links != blank %}
+                <div>
+                  <button>
+                    {{ link.title }}
+                    {%  render 'icon-dropdown' %}
+                  </button>
+                </div>
+              {% else %}
+                <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">
+                  {{ link.title }}
+                </a>
+              {% endif %}
+          {% endfor %}
        </div>
       <!-- cart button / account links -->
        <div>
@@ -16,3 +29,18 @@
     </div>
   </div>
 </div>
+
+
+{%  schema  %} 
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "menu",
+        "default": "main-menu",
+        "label": "Hading Navigation Menu"
+      }
+    ]
+  }
+{% endschema %}

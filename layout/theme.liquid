@@ -26,25 +26,23 @@
         <meta property="og:image" content="{{ 'default-logo.png' | asset_url }}">
     {% endif %}
 
-    <!-- Dynamic CSS -->
-    {% if template contains 'product' %}
-        <link rel="stylesheet" href="{{ 'product.css' | asset_url }}">
-    {% elsif template contains 'collection' %}
-        <link rel="stylesheet" href="{{ 'collection.css' | asset_url }}">
-    {% else %}
-        <link rel="stylesheet" href="{{ 'main.css' | asset_url }}">
-    {% endif %}
-
     <!-- Additional Scripts or Styles -->
-    {{ content_for_header }}
+     
+        {{ content_for_header }}
+
+    <!-- Dynamic CSS -->
+
+    {{ 'application.css' |  asset_url |  stylesheet_tag }}
 
     <!-- Custom CSS or JS -->
-    {{ page.metafields.custom.head_code }}
 
 </head>
 <body>
+    {% section 'header' %}
 
-    {{content_for_layout}} 
+    <main role="main">
+        {{content_for_layout}} 
+    </main>
 
 </body>
 </html>
