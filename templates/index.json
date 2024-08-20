@@ -9,22 +9,28 @@
 */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "rich_text_ctnPLn": {
+      "type": "rich-text",
       "blocks": {
-        "heading": {
+        "heading_XGm4Nx": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "heading": "Talk about your brand",
+            "heading_size": "h1"
           }
         },
-        "button": {
-          "type": "buttons",
+        "text_B3mbrC": {
+          "type": "text",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify:\/\/collections\/all",
-            "button_style_secondary_1": true,
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>"
+          }
+        },
+        "button_d4mKwz": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
             "button_label_2": "",
             "button_link_2": "",
             "button_style_secondary_2": false
@@ -32,24 +38,21 @@
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "heading_XGm4Nx",
+        "text_B3mbrC",
+        "button_d4mKwz"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "image_behavior": "none",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
       }
     }
   },
   "order": [
-    "image_banner"
+    "rich_text_ctnPLn"
   ]
 }
