@@ -269,8 +269,8 @@
       }
     },
     "404": {
-      "title": "Page not found",
-      "subtext": "404"
+      "title": "404",
+      "subtext": "Page not found"
     }
   },
   "sections": {
