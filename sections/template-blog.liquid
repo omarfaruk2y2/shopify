@@ -15,7 +15,7 @@
                 {% endif %}
             </nav>
         </div>
-        
+
         <div class="max-w-7xl mx-auto py-28">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {%  for article in blog.articles %} 
@@ -47,6 +47,9 @@
                     </div>
                 {% endfor %}
             </div>
+        </div>
+        <div class="">
+            {%  render 'pagination', pagination: paginate %}
         </div>
     {% endpaginate %}
 </div>
