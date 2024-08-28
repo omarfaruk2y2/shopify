@@ -1,0 +1,20 @@
+<div class="">
+    {% paginate collection.products by 6 %}
+        <div class="bg-[#423328] py-28">
+            <h1 class="text-center text-white font-normal text-[74px] leading-[78px] -tracking-[2.96px]">{{ collection.title }}</h1>
+        </div>
+
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {% for product in collection.products %}
+                    {%  render 'product-card', product_product: product %}
+                    
+                {% else %} 
+                   <p>There are no products inside of this collection</p>
+                {% endfor %}
+            
+            </div>
+
+        </div>{%  render 'pagination', pagination: paginate %}
+    {% endpaginate %}
+</div>
