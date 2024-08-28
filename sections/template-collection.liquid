@@ -1,5 +1,5 @@
 <div class="">
-    {% paginate collection.products by 6 %}
+    {% paginate collection.products by section.settings.number_of_products_per_page %}
         <div class="bg-[#423328] py-28">
             <h1 class="text-center text-white font-normal text-[74px] leading-[78px] -tracking-[2.96px]">{{ collection.title }}</h1>
         </div>
@@ -18,3 +18,17 @@
         </div>{%  render 'pagination', pagination: paginate %}
     {% endpaginate %}
 </div>
+
+{% schema %}
+{
+    "name": "Template Collection",
+    "settings": [
+            {
+                "type": "number",
+                "id": "number_of_products_per_page",
+                "default": 6,
+                "label": "Number of products per page"
+            }
+        ]
+}
+{% endschema %}
