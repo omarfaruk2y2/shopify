@@ -12,22 +12,11 @@
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured Collection",
-        "featured_collection": "all",
-        "number_of_products_to_show": 4
-      }
-    },
-    "featured_collection_VQ4gKF": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Featured Collection",
-        "featured_collection": "hydrogen",
-        "number_of_products_to_show": 4
+        "featured_collection": "all"
       }
     }
   },
   "order": [
-    "featured-collection",
-    "featured_collection_VQ4gKF"
+    "featured-collection"
   ]
 }
