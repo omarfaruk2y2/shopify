@@ -30,12 +30,20 @@
      
         {{ content_for_header }}
 
-    <!-- Dynamic JS -->
-    
-
     <!-- Dynamic CSS -->
-
     {{ 'application.css' |  asset_url |  stylesheet_tag }}
+    
+    <link href="{{ 'swiper-bundle.min.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Dynamic JS -->
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'alpine.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'application.js' | asset_url }}" defer></script>
+
+    <!-- Optional: Load conditional scripts for specific sections/pages -->
+    {% if template contains 'product' %}
+    <script src="{{ 'product.js' | asset_url }}" defer></script>
+    {% endif %}
     
 
 </head>
@@ -45,9 +53,5 @@
     <main role="main">
         {{content_for_layout}} 
     </main>
-
-    <!-- Dynamic JS -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="{{ 'application.js' | asset_url }}" defer></script>
 </body>
 </html>
