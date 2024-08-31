@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<div class="max-w-7xl mx-auto my-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="product--medias">
+            <div class="hidden md:block">
+                {%  for media in product.media %} 
+                    <div class="h-100 overflow-hidden p-2">
+                        {%  render 'product-media', media: media %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="md:hidden">
+                <div class="swiper h-80">
+                    <div class="swiper-wrapper">
+                        {%  for media in product.media %} 
+                            <div class="swiper-slide">
+                                <div class="h-80 overflow-hidden p-2">
+                                    {%  render 'product-media' %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var swiper = new Swiper('.swiper', {
+      loop: true, // Enable looping
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      autoplay: {
+        delay: 5000, // Auto-slide every 5 seconds
+        disableOnInteraction: false,
+      },
+    });
+  });
+</script>
