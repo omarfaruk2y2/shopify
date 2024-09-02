@@ -140,6 +140,20 @@
                                                 {%  else %}
                     {% endcase %}
                 {% endfor %}
+
+                <!-- Brand, SKU, and Status -->
+                <div class="my-3">
+                    <p class="text-lg"><strong>Brand:</strong> {{ product.vendor }}</p>
+                    <p class="text-lg"><strong>SKU:</strong> {{ product.selected_or_first_available_variant.sku }}</p>
+                    <p class="text-lg">
+                        <strong>Status:</strong> 
+                        {% if product.available %}
+                            <span class="text-green-600">In Stock</span>
+                        {% else %}
+                            <span class="text-red-600">Out of Stock</span>
+                        {% endif %}
+                    </p>
+                </div>
                 
                 <!-- Hidden input for the variant ID -->
                 <input type="hidden" name="id" value="{{ selected_variant.id }}">
@@ -236,6 +250,43 @@ document.getElementById('dynamic-buy-now').addEventListener('click', function() 
 
             if (selectedVariant) {
                 document.querySelector('input[name="id"]').value = selectedVariant.id;
+            }
+        });
+    });
+
+
+    ///
+
+    // Handle variant change (if applicable)
+    document.querySelectorAll('select[name^="options"]').forEach(function(select) {
+        select.addEventListener('change', function() {
+            var selectedOptions = Array.from(document.querySelectorAll('select[name^="options"]')).map(function(select) {
+                return select.value;
+            });
+
+            var selectedVariant = {{ product | json }}.variants.find(function(variant) {
+                return variant.options.every(function(option, index) {
+                    return option === selectedOptions[index];
+                });
+            });
+
+            if (selectedVariant) {
+                document.querySelector('input[name="id"]').value = selectedVariant.id;
+
+                // Update SKU
+                document.querySelector('#sku').textContent = selectedVariant.sku;
+
+                // Update Status
+                var statusElement = document.querySelector('#status');
+                if (selectedVariant.available) {
+                    statusElement.textContent = "In Stock";
+                    statusElement.classList.remove('text-red-600');
+                    statusElement.classList.add('text-green-600');
+                } else {
+                    statusElement.textContent = "Out of Stock";
+                    statusElement.classList.remove('text-green-600');
+                    statusElement.classList.add('text-red-600');
+                }
             }
         });
     });
