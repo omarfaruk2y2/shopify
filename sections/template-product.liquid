@@ -1,54 +1,117 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<style>
+    .swiper-button-prev, .swiper-button-next{}
+    .swiper-button-prev::after, .swiper-button-next::after{}
+    .slider-product-one .swiper-wrapper{ display: flex; flex-direction: column; }
+    .slider-product-one.mySwiper img{ width: 110px !important; height: 130px !important; background-color: #F1EDE4;}
+    .slider-product-one{ width: 110px !important; position: absolute; left: -140px; top: 0; z-index: 11;}
+    .slider-product-one .swiper-wrapper{ width: fit-content !important;}
+    .slider-product-one .swiper-wrapper .swiper-slide { width: 100% !important; margin-right: 0 !important;}
+    .slider-product-one .swiper-wrapper .swiper-slide.swiper-slide-thumb-active{border: 1px solid #9D744D;}
+    .slider-product-one .swiper-wrapper .swiper-slide{border: 1px solid #9d744d00;}
+    .slider-product-one .swiper-wrapper .swiper-slide{ margin-bottom: 10px;}
 
-<div class="max-w-7xl mx-auto my-8">
+    .slider-product-two.mySwiper2 img{ background-color: #F1EDE4;}
+    .slider-product-two{ }
+
+</style>
+
+<div class="mx-auto max-w-7xl my-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <div class="product--medias">
-            <div class="hidden md:block">
-                {%  for media in product.media %} 
-                    <div class="h-100 overflow-hidden p-2">
-                        {%  render 'product-media', media: media %}
-                    </div>
-                {% endfor %}
-            </div>
-
-            <div class="md:hidden">
-                <div class="swiper h-80">
+        <div class="product--medias relative">
+            <div class="relative">
+                <div class="slider-product-one mySwiper">
                     <div class="swiper-wrapper">
                         {%  for media in product.media %} 
                             <div class="swiper-slide">
-                                <div class="h-80 overflow-hidden p-2">
-                                    {%  render 'product-media' %}
+                                <div class="overflow-hidden bg-[#F1EDE4] cursor-pointer">
+                                    {%  render 'product-media', media: media %}
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="swiper-pagination"></div>
+
+                </div>
+
+                <div class="slider-product-two relative z-10 overflow-hidden  mySwiper2">
+                    <div class="swiper-wrapper">
+                        {%  for media in product.media %} 
+                            <div class="swiper-slide">
+                                <div class="overflow-hidden">
+                                    {%  render 'product-media', media: media %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
 
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-button-next"></div>
                 </div>
             </div>
         </div>
+        <div class="product--information">
+            {%  form 'product', product %} 
+                <div class="my-3">
+                    <h1 class="text-5xl font-normal text-[#423328]">{{ product.title }}</h1>
+                </div>
+                
+                <div class="my-3">
+                    {%  assign product_price = product.selected_or_first_available_variant %}
+                    <span class="text-2xl font-normal text-[#B0A89F] line-through">{{ product_price.compare_at_price | money }}</span>
+                    <span class="text-2xl font-semibold text-[#423328]">{{ product_price.price | money }}</span>
+                </div>
+                <div class="my-3">
+                    {%  unless product.has_only_default_variant %} 
+                        <div class="" data-url="{{ product.url }}" data-section="{{ section.id }}">
+                            {%  for option in product.options_with_values %} 
+                                <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+
+                                <div class="my-2">
+                                    <select 
+                                    name="options[{{ option.name |  escape }}]" 
+                                    id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                                    class="w-full border py-1 px-3">
+                                    {%  for value in option.values %} 
+                                        <option 
+                                        value="{{ value |  escape }}" 
+                                        {%  if option.selected_value == value %} 
+                                            selected="selected"
+                                        {% endif %}
+                                        >{{ value }}
+                                        </option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+
+
+                            {% endfor %}
+                        </div>
+                    {% endunless %}
+                </div>
+            {% endform %}
+        </div>
     </div>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    var swiper = new Swiper('.swiper', {
-      loop: true, // Enable looping
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
+    var swiper = new Swiper(".mySwiper", {
+      loop: true,
+      spaceBetween: 10,
+      slidesPerView: 3,
+      freeMode: true,
+      watchSlidesProgress: true,
+    });
+    var swiper2 = new Swiper(".mySwiper2", {
+      loop: true,
+      spaceBetween: 10,
       navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
       },
-      autoplay: {
-        delay: 5000, // Auto-slide every 5 seconds
-        disableOnInteraction: false,
+      thumbs: {
+        swiper: swiper,
       },
     });
   });
 </script>
+
