@@ -17,8 +17,26 @@
 
 </style>
 
-<div class="bg-[#423328] py-28">
-    <h1 class="text-center text-white font-normal text-[74px] leading-[78px] -tracking-[2.96px]">{{ product.title }}</h1>
+<div class="bg-[#423328] py-5 px-4">
+    <div class="max-w-[1600px] mx-auto">
+  <ol class="flex space-x-2 text-white">
+    <li class="breadcrumb-item">
+      <a href="{{ routes.root_url }}" class="hover:text-gray-900">Home</a>
+    </li>
+    <li>|</li>
+    {% if template == 'page' %}
+      <li class="breadcrumb-item active" aria-current="page">{{ current_page }}</li>
+    {% elsif template == 'product' %}
+      <li>
+        <a href="/collections/{{ product.collections.first.handle }}" class="hover:text-gray-900">{{ product.collections.first.title }}</a>
+      </li>
+      <li>|</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>
+    {% elsif template == 'collection' %}
+      <li class="breadcrumb-item active" aria-current="page">{{ collection.title }}</li>
+    {% endif %}
+  </ol>
+</div>
 </div>
 
 <div class="mx-auto max-w-7xl my-8">
@@ -142,17 +160,20 @@
                 {% endfor %}
 
                 <!-- Brand, SKU, and Status -->
-                <div class="my-3">
-                    <p class="text-lg"><strong>Brand:</strong> {{ product.vendor }}</p>
-                    <p class="text-lg"><strong>SKU:</strong> {{ product.selected_or_first_available_variant.sku }}</p>
+                <div class="my-8">
                     <p class="text-lg">
                         <strong>Status:</strong> 
                         {% if product.available %}
-                            <span class="text-green-600">In Stock</span>
+                            <span class="text-green-600 font-normal">In Stock</span>
                         {% else %}
                             <span class="text-red-600">Out of Stock</span>
                         {% endif %}
                     </p>
+
+                    <p class="text-lg font-normal"><strong>Brand:</strong> {{ product.vendor }}</p>
+
+                    <p class="text-lg font-normal"><strong>SKU:</strong> {{ product.selected_or_first_available_variant.sku }}</p>
+                    
                 </div>
                 
                 <!-- Hidden input for the variant ID -->
@@ -215,7 +236,7 @@
 
 /////
 
-document.getElementById('dynamic-buy-now').addEventListener('click', function() {
+    document.getElementById('dynamic-buy-now').addEventListener('click', function() {
         var productForm = document.querySelector('form[action="/cart/add"]');
         
         // Ensure the variant ID is captured
@@ -254,8 +275,6 @@ document.getElementById('dynamic-buy-now').addEventListener('click', function() 
         });
     });
 
-
-    ///
 
     // Handle variant change (if applicable)
     document.querySelectorAll('select[name^="options"]').forEach(function(select) {
