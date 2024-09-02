@@ -1,3 +1,5 @@
+{% assign selected_variant = product.selected_or_first_available_variant %}
+
 <style>
     .swiper-button-prev, .swiper-button-next{}
     .swiper-button-prev::after, .swiper-button-next::after{}
@@ -15,8 +17,12 @@
 
 </style>
 
+<div class="bg-[#423328] py-28">
+    <h1 class="text-center text-white font-normal text-[74px] leading-[78px] -tracking-[2.96px]">{{ product.title }}</h1>
+</div>
+
 <div class="mx-auto max-w-7xl my-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
         <div class="product--medias relative">
             <div class="relative">
                 <div class="slider-product-one mySwiper">
@@ -49,45 +55,96 @@
             </div>
         </div>
         <div class="product--information">
-            {%  form 'product', product %} 
-                <div class="my-3">
-                    <h1 class="text-5xl font-normal text-[#423328]">{{ product.title }}</h1>
-                </div>
-                
-                <div class="my-3">
-                    {%  assign product_price = product.selected_or_first_available_variant %}
-                    <span class="text-2xl font-normal text-[#B0A89F] line-through">{{ product_price.compare_at_price | money }}</span>
-                    <span class="text-2xl font-semibold text-[#423328]">{{ product_price.price | money }}</span>
-                </div>
-                <div class="my-3">
-                    {%  unless product.has_only_default_variant %} 
-                        <div class="" data-url="{{ product.url }}" data-section="{{ section.id }}">
-                            {%  for option in product.options_with_values %} 
-                                <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+            {% form 'product', product %} 
 
-                                <div class="my-2">
-                                    <select 
-                                    name="options[{{ option.name |  escape }}]" 
-                                    id="Option-{{ section.id }}-{{ forloop.index0 }}"
-                                    class="w-full border py-1 px-3">
-                                    {%  for value in option.values %} 
-                                        <option 
-                                        value="{{ value |  escape }}" 
-                                        {%  if option.selected_value == value %} 
-                                            selected="selected"
-                                        {% endif %}
-                                        >{{ value }}
-                                        </option>
-                                    {% endfor %}
-                                    </select>
+                {%  for block in section.blocks %} 
+                    {%  case block.type %} 
+                        {%  when 'title' %}
+                            <!-- Product Title -->
+                            <div class="my-3">
+                                <h1 class="text-5xl font-normal text-[#423328]">{{ product.title }}</h1>
+                            </div>
+                            {%  when 'price' %}
+                                <!-- Product Price -->
+                                <div class="my-3">
+                                    <span class="text-2xl font-normal text-[#B0A89F] line-through">{{ selected_variant.compare_at_price | money }}</span>
+                                    <span class="text-2xl font-semibold text-[#423328]">{{ selected_variant.price | money }}</span>
                                 </div>
+                                {%  when 'varient_selector' %}
+                                    <!-- Product Options -->
+                                    <div class="my-3">
+                                        {% unless product.has_only_default_variant %} 
+                                            <div data-url="{{ product.url }}" data-section="{{ section.id }}">
+                                                {% for option in product.options_with_values %} 
+                                                    <label class="font-medium uppercase text-sm leading-7" for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+                                                    <div class="my-2">
+                                                        <select 
+                                                            name="options[{{ option.name | escape }}]" 
+                                                            id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                                                            class="w-full border py-1 px-3">
+                                                            {% for value in option.values %} 
+                                                                <option 
+                                                                    value="{{ value | escape }}" 
+                                                                    {% if option.selected_value == value %} selected="selected"{% endif %}
+                                                                >{{ value }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endunless %}
+                                    </div>
 
+                                    {%  when 'quantity' %}
+                                        <!-- Quantity and Add to Cart Button -->
+                                        <div class="mt-3 flex items-center gap-4">
+                                            <div class="flex items-center bg-[#E8E1D7]">
+                                                <button type="button" class="quantity-button px-3 py-2 text-2xl text-[#423328] font-medium bg-transparent rounded" id="decrease">-</button>
+                                                <input 
+                                                    type="number" 
+                                                    name="quantity" 
+                                                    value="1" 
+                                                    min="1" 
+                                                    class="quantity-input w-12 text-center border border-transparent text-[#423328] text-base font-medium bg-[#E8E1D7]" 
+                                                    id="quantityInput">
+                                                <button type="button" class="quantity-button px-3 py-2 text-2xl font-medium text-[#423328] bg-transparent rounded" id="increase">+</button>
+                                            </div>
+                                            <div class="w-full">
+                                                <button 
+                                                    type="submit" 
+                                                    name="add" 
+                                                    class="w-full px-6 py-3 text-base font-medium uppercase bg-[#423328] text-white hover:bg-black my-2"
+                                                    {% if selected_variant.available == false %} disabled{% endif %}
+                                                >
+                                                    {% if selected_variant.available == false %} 
+                                                        Sold out
+                                                    {% else %}
+                                                        Add to cart
+                                                    {% endif %}
+                                                </button>
+                                            </div>
+                                        </div>
 
-                            {% endfor %}
-                        </div>
-                    {% endunless %}
-                </div>
+                                        {%  when 'checkout_button' %}
+                                            <!-- Buy Now Button -->
+                                            <div class="my-3">
+                                                <button type="button" id="dynamic-buy-now" class="btn w-full py-3 bg-[#9D744D] text-base font-medium uppercase text-white hover:bg-black">Buy Now</button>
+                                            </div>
+
+                                            {%  when 'description' %}
+                                                <!-- Product Description -->
+                                                <div class="my-3">
+                                                    <p class="text-[#9D744D]">{{ product.description }}</p>
+                                                </div>
+
+                                                {%  else %}
+                    {% endcase %}
+                {% endfor %}
+                
+                <!-- Hidden input for the variant ID -->
+                <input type="hidden" name="id" value="{{ selected_variant.id }}">
             {% endform %}
+            
         </div>
     </div>
 </div>
@@ -113,5 +170,112 @@
       },
     });
   });
+
+  //
+  document.addEventListener('DOMContentLoaded', function() {
+  const quantityInput = document.getElementById('quantityInput');
+  const decreaseButton = document.getElementById('decrease');
+  const increaseButton = document.getElementById('increase');
+
+  // Handle increase button
+  increaseButton.addEventListener('click', function() {
+    let currentValue = parseInt(quantityInput.value, 10);
+    quantityInput.value = currentValue + 1;
+  });
+
+  // Handle decrease button
+  decreaseButton.addEventListener('click', function() {
+    let currentValue = parseInt(quantityInput.value, 10);
+    if (currentValue > 1) {
+      quantityInput.value = currentValue - 1;
+    }
+  });
+
+  // Ensure quantity input is at least 1
+  quantityInput.addEventListener('input', function() {
+    if (quantityInput.value < 1) {
+      quantityInput.value = 1;
+    }
+  });
+});
+
+/////
+
+document.getElementById('dynamic-buy-now').addEventListener('click', function() {
+        var productForm = document.querySelector('form[action="/cart/add"]');
+        
+        // Ensure the variant ID is captured
+        var variantIdInput = productForm.querySelector('input[name="id"]');
+        var variantId = variantIdInput ? variantIdInput.value : null;
+        
+        var quantityInput = productForm.querySelector('input[name="quantity"]');
+        var quantity = quantityInput ? quantityInput.value : 1;
+
+        if (!variantId) {
+            console.error('Variant ID is missing.');
+            return;
+        }
+
+        // Redirect to the checkout page with the selected variant and quantity
+        var checkoutUrl = `/checkout?updates[${variantId}]=${quantity}`;
+        window.location.href = checkoutUrl;
+    });
+
+    // Handle variant change (if applicable)
+    document.querySelectorAll('select[name^="options"]').forEach(function(select) {
+        select.addEventListener('change', function() {
+            var selectedOptions = Array.from(document.querySelectorAll('select[name^="options"]')).map(function(select) {
+                return select.value;
+            });
+
+            var selectedVariant = {{ product | json }}.variants.find(function(variant) {
+                return variant.options.every(function(option, index) {
+                    return option === selectedOptions[index];
+                });
+            });
+
+            if (selectedVariant) {
+                document.querySelector('input[name="id"]').value = selectedVariant.id;
+            }
+        });
+    });
+
 </script>
 
+{% schema %}
+{
+    "name": "Product",
+    "blocks": [
+            {
+                "type": "title",
+                "name": "Title",
+                "limit": 1
+            },
+            {
+                "type": "price",
+                "name": "Price",
+                "limit": 1
+            },
+            {
+                "type": "varient_selector",
+                "name": "Varient Selector",
+                "limit": 1
+            },
+            {
+                "type": "quantity",
+                "name": "Quantity",
+                "limit": 1
+            },
+            {
+                "type": "description",
+                "name": "Description",
+                "limit": 1
+            },
+            {
+                "type": "checkout_button",
+                "name": "Checkout Button",
+                "limit": 1
+            }
+        ]
+}
+{% endschema %}
