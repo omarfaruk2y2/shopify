@@ -32,6 +32,7 @@
 
     <!-- Dynamic CSS -->
     {{ 'application.css' |  asset_url |  stylesheet_tag }}
+    {{ 'main.css' |  asset_url |  stylesheet_tag }}
     
     <link href="{{ 'swiper-bundle.min.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
 
@@ -47,7 +48,7 @@
     
 
 </head>
-<body>
+<body class="bg-[#FAF6EE]">
     {% section 'header' %}
 
     <main role="main">
