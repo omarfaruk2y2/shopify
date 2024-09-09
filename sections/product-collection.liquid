@@ -1,0 +1,46 @@
+<div class="flex flex-col items-center my-8">
+    <div class="max-w-[1600px] w-full mx-auto my-3">
+        <div>
+            <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            {% for collection in collections %} 
+                {% if collection.all_products_count > 0 %} 
+                    <div class="w-full py-6 px-3">
+                        <div class="overflow-hidden flex flex-col justify-center items-center">
+                            <a href="{{ collection.url }}">
+                                <div class="overflow-hidden rounded-full">
+                                    {% if collection.featured_image != blank %} 
+                                        {% assign collection_image = collection.featured_image %}
+                                    {% else %}
+                                        {% assign collection_image = collection.products.first.image %}
+                                    {% endif %}
+                                    <img class="w-full max-w-[195px] h-full max-h-[195px] rounded-full object-cover transition duration-1000 ease-in-out transform hover:scale-105" src="{{ collection_image | img_url: 'medium' }}" height="" width="" alt="{{ collection.title | escape }}">
+                                </div>
+                            </a>
+                            <div class="p-4">
+                                <h1 class="text-xl text-[#423328] text-center">{{ collection.title }}</h1>
+                                <p class="text-sm font-medium uppercase text-[#9D744D] text-center">{{ collection.all_products_count }} items</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% schema %}
+    {
+      "name": "Product Collection",
+      "settings": [],
+
+      "presets": [
+        {
+          "name": "product collection",
+          "category": "Custom"
+        }
+      ]
+    }
+{% endschema %}

@@ -1,4 +1,4 @@
-{% comment %} <article class="py-28" itemscope itemtype="http://schema.org/BlogPosting">
+<article class="py-28" itemscope itemtype="http://schema.org/BlogPosting">
     {% for block in section.blocks %}
         {% case block.type %}
             {% when 'article_title' %}
@@ -145,7 +145,7 @@
     </div>
 {% endif %}
 
-<script type="application/ld+json">
+{% comment %} <script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -170,7 +170,7 @@
             "name": {{ shop.name | json }}
         }
     }
-</script>
+</script> {% endcomment %}
 
 {%  schema  %} 
 {
@@ -222,4 +222,4 @@
 
 
 
- {% endcomment %}
+

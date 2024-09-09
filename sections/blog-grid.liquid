@@ -1,0 +1,129 @@
+<div class="home-blog-widget py-32">
+    <div class="max-w-[1600px] mx-auto">
+      <!-- More Articles Button -->
+      {% if section.settings.show_heading_text %}
+        <h1 class="text-[#423328] text-center text-5xl font-normal -tracking-[1.92px] mb-14">
+          {{ section.settings.blog_heading_text }}
+        </h1>
+      {% endif %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% if section.settings.blog != blank %}
+                {% for article in blogs[section.settings.blog].articles limit: section.settings.number_of_blog_posts %}
+                    <div class="w-full py-6 px-3">
+                        <div class="overflow-hidden">
+                            {% if article.image %}
+                                <a href="{{ article.url }}">
+                                    <img class="w-full h-80 object-cover" width="" height="" src="{{ article.image | img_url: 'medium' }}" alt="{{ article.image.alt }}">
+                                </a>
+                            {% else %}
+                                {{ 'image' | placeholder_svg_tag: 'w-full h-80 object-cover' }}
+                            {% endif %}
+
+                            <div class="p-4">
+                                <a href="{{ article.url }}">
+                                    <h1 class="text-xl text-[#423328] hover:text-[#9D744D] font-medium mt-4">{{ article.title }}</h1>
+                                </a>
+
+                                <p class="text-sm font-medium uppercase text-[#9D744D] mt-2 mb-4">{{ article.published_at | date: "%B %d, %Y" }}</p>
+
+                                {% if section.settings.show_content %}
+                                  {% if article.excerpt.size > 0 %}
+                                      <p>{{ article.excerpt | strip_html | truncatewords: 15 }}</p>
+                                  {% else %}
+                                      <p>{{ article.content | strip_html | truncatewords: 15 }}</p>
+                                  {% endif %}
+                                {% endif %}
+
+                                {% if section.settings.show_read_more %}
+                                    <a href="{{ article.url }}" class="font-medium text-[#9D744D] hover:text-black mt-4 block">{{ section.settings.blog_read_more }}</a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No blog selected. Please select a blog in the section settings.</p>
+            {% endif %}
+        </div>
+
+        <!-- More Articles Button -->
+        {% if section.settings.show_all_articles_button %}
+          <div class="text-center mt-8">
+              <a href="{{ blogs[section.settings.blog].url }}" class="inline-block bg-[#9D744D] text-white font-medium py-2 px-6 rounded hover:bg-[#423328]">
+                  {{ section.settings.more_articles_text }}
+              </a>
+          </div>
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "Home Blog Widget",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Select Blog"
+    },
+    {
+      "type": "text",
+      "id": "blog_heading_text",
+      "label": "Blog title",
+      "default": "Latest News & Articles"
+    },
+    {
+      "type": "text",
+      "id": "more_articles_text",
+      "label": "'More Articles' button text",
+      "default": "More Articles"
+    },
+    {
+      "type": "text",
+      "id": "blog_read_more",
+      "label": "Read more label",
+      "default": "Read more"
+    },
+    {
+      "type": "range",
+      "id": "number_of_blog_posts",
+      "step": 1,
+      "min": 1,
+      "max": 6,
+      "label": "Blog posts per page",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content",
+      "label": "Show blog content",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_more",
+      "label": "Show 'Read more' link",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_heading_text",
+      "label": "Show heading text",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_all_articles_button",
+      "label": "Show all articles button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home Blog Widget",
+      "category": "Homepage"
+    }
+  ]
+}
+{% endschema %}

@@ -45,14 +45,21 @@
     {% if template contains 'product' %}
     <script src="{{ 'product.js' | asset_url }}" defer></script>
     {% endif %}
+
+    <!-- Font Awesome Script -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" crossorigin="anonymous"></script>
+
     
 
 </head>
 <body class="bg-[#FAF6EE]">
+    {% section 'announcement-bar' %}
     {% section 'header' %}
 
     <main role="main">
         {{content_for_layout}} 
     </main>
+
+    {% section 'footer' %}
 </body>
 </html>
