@@ -2,7 +2,7 @@
     <div class="max-w-[1600px] mx-auto">
       <!-- More Articles Button -->
       {% if section.settings.show_heading_text %}
-        <h1 class="text-[#423328] text-center text-5xl font-normal -tracking-[1.92px] mb-14">
+        <h1 class="text-[#423328] text-center text-5xl font-normal font-gambetta -tracking-[1.92px] mb-14">
           {{ section.settings.blog_heading_text }}
         </h1>
       {% endif %}
@@ -21,10 +21,10 @@
 
                             <div class="p-4">
                                 <a href="{{ article.url }}">
-                                    <h1 class="text-xl text-[#423328] hover:text-[#9D744D] font-medium mt-4">{{ article.title }}</h1>
+                                    <h1 class="text-xl text-[#423328] hover:text-[#9D744D] font-medium font-generalSans mt-4">{{ article.title }}</h1>
                                 </a>
 
-                                <p class="text-sm font-medium uppercase text-[#9D744D] mt-2 mb-4">{{ article.published_at | date: "%B %d, %Y" }}</p>
+                                <p class="text-sm font-medium font-generalSans uppercase text-[#9D744D] mt-2 mb-4">{{ article.published_at | date: "%B %d, %Y" }}</p>
 
                                 {% if section.settings.show_content %}
                                   {% if article.excerpt.size > 0 %}
@@ -35,7 +35,7 @@
                                 {% endif %}
 
                                 {% if section.settings.show_read_more %}
-                                    <a href="{{ article.url }}" class="font-medium text-[#9D744D] hover:text-black mt-4 block">{{ section.settings.blog_read_more }}</a>
+                                    <a href="{{ article.url }}" class="font-medium font-generalSans text-[#9D744D] hover:text-black mt-4 block">{{ section.settings.blog_read_more }}</a>
                                 {% endif %}
 
                             </div>
@@ -50,7 +50,7 @@
         <!-- More Articles Button -->
         {% if section.settings.show_all_articles_button %}
           <div class="text-center mt-8">
-              <a href="{{ blogs[section.settings.blog].url }}" class="inline-block bg-[#9D744D] text-white font-medium py-2 px-6 rounded hover:bg-[#423328]">
+              <a href="{{ blogs[section.settings.blog].url }}" class="inline-block bg-transparent border border-[#423328] text-[#423328] text-base font-generalSans uppercase font-medium py-3 px-12 hover:bg-white">
                   {{ section.settings.more_articles_text }}
               </a>
           </div>

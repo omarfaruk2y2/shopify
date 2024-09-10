@@ -1,0 +1,112 @@
+<style>
+    .swiper-button-next {right: -60px; left: auto;}
+    .swiper-button-prev {right: auto; left: -60px;}
+    .swiper-button-next:after {color: #423328; font-size: 35px;}
+    .swiper-button-prev:after {color: #423328; font-size: 35px;}
+</style>
+
+<div class="py-32 relative max-w-[1600px] mx-auto">
+    {%  if section.settings.title != blank %} 
+        <h1 class="text-5xl font-normal font-gambetta -tracking-[1.92px] text-center mb-14">{{ section.settings.title }}</h1>
+    {% endif %}
+
+    <div class="swiper mySwiper-container ">
+        <div class="swiper-wrapper">
+            {% if collections['best-selling'].products.size > 0 %}
+            {% for product in collections['best-selling'].products %}
+                <div class="swiper-slide relative">
+                    <!-- Discount Badge -->
+                    {% if product.compare_at_price > product.price %}
+                        <div class="absolute top-5 left-5 bg-[#CA473E] text-[#FAF6EE] text-sm font-medium font-generalSans uppercase py-1 px-3 rounded-3xl">
+                        -{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round: 0 }}%
+                        </div>
+                    {% endif %}
+
+                    <!-- Product Image -->
+                    <a href="{{ product.url }}">
+                        <img class="w-full max-h-96 h-full bg-[#F1EDE4] mb-5" width="" height="" src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.title }}">
+                        
+                        <!-- Product Title -->
+                        <h3 class="text-lg font-medium font-generalSans text-[#423328] mb-1">{{ product.title }}</h3>
+                        
+                        <!-- Product Price -->
+                        <p class="text-base font-generalSans font-semibold {% if product.compare_at_price > product.price %}text-[#423328]{% else %}text-[#423328]{% endif %}">
+                        {{ product.price | money }}
+                        {% if product.compare_at_price > product.price %}
+                            <span class="line-through text-[#B0A89F] text-base">{{ product.compare_at_price | money }}</span>
+                        {% endif %}
+                        </p>
+                    </a>
+                </div>
+            {% endfor %}
+            {% else %}
+            <p>No products available in this collection.</p>
+            {% endif %}
+        </div>
+        
+        
+    </div>
+    <!-- Optional Swiper Navigation Controls -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+{% schema %}
+  {
+    "name": "Best Selling Products",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Best Selling Products"
+        }
+    ],
+    "presets": [
+      {
+        "name": "Best Selling Products",
+        "category": "Custom"
+      }
+    ]
+  }
+{% endschema %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const swiper = new Swiper('.mySwiper-container', {
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      slidesPerView: 4, // Show 4 slides per view
+      spaceBetween: 20, // Space between slides (optional)
+      breakpoints: {
+        320: {
+          slidesPerView: 1, // 1 slide on small screens
+          spaceBetween: 10,
+        },
+        640: {
+          slidesPerView: 2, // 2 slides on small screens
+          spaceBetween: 15,
+        },
+        1024: {
+          slidesPerView: 3, // 3 slides on medium screens
+          spaceBetween: 24,
+        },
+        1280: {
+          slidesPerView: 4, // 4 slides on large screens
+          spaceBetween: 24,
+        }
+      }
+    });
+  });
+</script>
