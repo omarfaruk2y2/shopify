@@ -12,11 +12,33 @@
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "featured_collection": "all"
+        "title": "Featured Collection",
+        "featured_collection": "all",
+        "number_of_products_to_show": 4
+      }
+    },
+    "hero_slider_RQdB4t": {
+      "type": "hero-slider",
+      "blocks": {
+        "slide_QMULXY": {
+          "type": "slide",
+          "settings": {
+            "title": "Shop Our Latest Premium Perfumes Collection",
+            "subtitle": "Luxury Perfumes for Every Occasion",
+            "button_text": "Shop exclusive",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_QMULXY"
+      ],
+      "settings": {
       }
     }
   },
   "order": [
-    "featured-collection"
+    "featured-collection",
+    "hero_slider_RQdB4t"
   ]
 }
