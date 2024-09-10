@@ -28,6 +28,11 @@
       "settings": {
       }
     },
+    "product_collection_mPkXDD": {
+      "type": "product-collection",
+      "settings": {
+      }
+    },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
@@ -49,17 +54,12 @@
         "show_heading_text": true,
         "show_all_articles_button": true
       }
-    },
-    "product_collection_mPkXDD": {
-      "type": "product-collection",
-      "settings": {
-      }
     }
   },
   "order": [
     "hero_slider_RQdB4t",
+    "product_collection_mPkXDD",
     "featured-collection",
-    "blog_grid_BjjWVn",
-    "product_collection_mPkXDD"
+    "blog_grid_BjjWVn"
   ]
 }
