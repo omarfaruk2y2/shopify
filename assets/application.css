@@ -1442,6 +1442,14 @@ video {
   text-align: right;
 }
 
+.font-gambetta {
+  font-family: gambetta, sans-serif;
+}
+
+.font-generalSans {
+  font-family: generalSans, sans-serif;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -1546,6 +1554,10 @@ video {
 
 .-tracking-\[0\.88px\] {
   letter-spacing: -0.88px;
+}
+
+.-tracking-\[1\.12px\] {
+  letter-spacing: -1.12px;
 }
 
 .-tracking-\[1\.92px\] {
@@ -1715,6 +1727,39 @@ video {
 
 .ease-out {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@font-face {
+  font-family: 'gambetta';
+
+  src: url('{{ "gambetta.woff2" | asset_url }}') format('woff2'),
+         url('{{ "gambetta.woff" | asset_url }}') format('woff');
+
+  font-weight: 400;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'generalSans';
+
+  src: url('{{ "GeneralSans-Regular.woff2" | asset_url }}') format('woff2'),
+          url('{{ "GeneralSans-Regular.woff" | asset_url }}') format('woff');
+
+  font-weight: 400;
+
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'generalSans';
+
+  src: url('{{ "GeneralSans-Medium.woff2" | asset_url }}') format('woff2'),
+          url('{{ "GeneralSans-Medium.woff" | asset_url }}') format('woff');
+
+  font-weight: 500;
+
+  font-style: normal;
 }
 
 .hover\:scale-105:hover {
