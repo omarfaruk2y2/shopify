@@ -1,0 +1,187 @@
+<!-- Product Card Snippet -->
+<div class="product-card p-4 border rounded-lg">
+    <a href="{{ product.url }}" class="block">
+    <div>
+
+      <img src="{{ product.featured_image | img_url: 'medium' }}" width="" height="" alt="{{ product.title }}" class="w-full">
+
+        <!-- Add to Cart Form -->
+        <form method="post" action="/cart/add" class="mt-4">
+        <!-- For Single Variant -->
+        {% if product.variants.size == 1 %}
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+        {% else %}
+          <!-- For Multiple Variants -->
+          <select name="id" class="w-full border mt-2 rounded">
+            {% for variant in product.variants %}
+              <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+            {% endfor %}
+          </select>
+        {% endif %}
+
+        <button type="submit" class="w-full bg-[#9D744D] text-white py-2 px-4 rounded hover:bg-black">
+          Add to Cart
+        </button>
+      </form>
+    </div>
+
+    <h3 class="text-lg mt-2">{{ product.title }}</h3>
+    <p class="text-sm text-gray-500">{{ product.price | money }}</p>
+  </a>
+
+</div>
+
+<!-- Sidebar Cart (Hidden by default) -->
+<div id="cart-sidebar" class="fixed right-0 top-0 w-80 h-full bg-white shadow-lg border-l transform translate-x-full transition-transform duration-300 z-50">
+  <div class="p-4">
+    <button id="close-cart-sidebar" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+      &times;
+    </button>
+    <h2 class="text-xl font-bold mb-4">Your Cart</h2>
+    <div id="cart-items" class="space-y-4">
+      <!-- Cart items will be dynamically inserted here -->
+    </div>
+    <div class="mt-4">
+      <p class="text-lg font-semibold">Total: <span id="cart-total">$0.00</span></p>
+      <a href="/cart" class="block mt-4 w-full bg-blue-500 text-white text-center py-2 rounded hover:bg-blue-600">Checkout</a>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+ 
+ document.querySelectorAll('.product-card form').forEach(form => {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent normal form submission
+
+    const formData = new FormData(this);
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Product added to cart:', data);
+
+      // Fetch updated cart and update sidebar
+      updateCartSidebar();
+
+      // Show the cart sidebar
+      document.getElementById('cart-sidebar').classList.add('open');
+    })
+    .catch(error => {
+      console.error('Error adding product to cart:', error);
+    });
+  });
+});
+
+// Function to fetch and update cart content
+// Function to fetch and update cart content
+function updateCartSidebar() {
+  fetch('/cart.js')
+    .then(response => response.json())
+    .then(cart => {
+      // Log the cart to debug
+      console.log(cart);
+
+      // Empty the cart items container
+      const cartItemsContainer = document.getElementById('cart-items');
+      cartItemsContainer.innerHTML = '';
+
+      // Add each cart item to the sidebar
+      cart.items.forEach(item => {
+        const itemElement = `
+          <div class="cart-item flex items-center justify-between">
+            <img src="${item.image}" class="w-16 h-16 object-cover" alt="${item.title}">
+            <div class="flex-1 ml-4">
+              <p class="text-sm">${item.title}</p>
+              <p class="text-xs text-gray-500">Qty: ${item.quantity}</p>
+            </div>
+            <p class="text-sm font-semibold">${Shopify.formatMoney(item.line_price)}</p>
+          </div>
+        `;
+        cartItemsContainer.insertAdjacentHTML('beforeend', itemElement);
+      });
+
+      // Update the cart total
+      document.getElementById('cart-total').textContent = Shopify.formatMoney(cart.total_price);
+    })
+    .catch(error => {
+      console.error('Error fetching cart:', error);
+    });
+}
+
+
+// Close Sidebar
+document.getElementById('close-cart-sidebar').addEventListener('click', function() {
+  document.getElementById('cart-sidebar').classList.remove('open');
+});
+
+
+
+
+
+Shopify.formatMoney = function(cents, format) {
+  if (typeof cents === 'string') cents = cents.replace('.', '');
+  var value = '';
+  var placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+  var formatString = format || '${{amount}}'; // Default format if none is provided
+
+  function defaultTo(value, default_value) {
+    return value == null ? default_value : value;
+  }
+
+  function formatWithDelimiters(number, precision, thousands, decimal) {
+    thousands = defaultTo(thousands, ',');
+    decimal = defaultTo(decimal, '.');
+
+    if (isNaN(number) || number == null) {
+      return 0;
+    }
+
+    number = (number / 100.0).toFixed(precision);
+
+    var parts = number.split('.');
+    var dollarsAmount = parts[0].replace(
+      /(\d)(?=(\d\d\d)+(?!\d))/g,
+      '$1' + thousands
+    );
+    var centsAmount = parts[1] ? decimal + parts[1] : '';
+
+    return dollarsAmount + centsAmount;
+  }
+
+  // Ensure formatString is properly defined
+  if (formatString && formatString.match(placeholderRegex)) {
+    switch (formatString.match(placeholderRegex)[1]) {
+      case 'amount':
+        value = formatWithDelimiters(cents, 2);
+        break;
+      case 'amount_no_decimals':
+        value = formatWithDelimiters(cents, 0);
+        break;
+      case 'amount_with_comma_separator':
+        value = formatWithDelimiters(cents, 2, '.', ',');
+        break;
+      case 'amount_no_decimals_with_comma_separator':
+        value = formatWithDelimiters(cents, 0, '.', ',');
+        break;
+      default:
+        value = formatWithDelimiters(cents, 2); // Default case
+        break;
+    }
+  } else {
+    value = formatWithDelimiters(cents, 2); // Default format
+  }
+
+  return formatString.replace(placeholderRegex, value);
+};
+
+
+
+
+</script>
+

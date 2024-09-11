@@ -1,0 +1,68 @@
+<div class="max-w-[1600px] mx-auto border-t border-[#423328] border-opacity-15 pt-32">
+
+    {% if section.settings.show_heading_text %}
+        <h1 class="text-[#423328] text-center text-5xl font-normal font-gambetta -tracking-[1.92px] mb-14">
+            {{ section.settings.title_testi }}
+        </h1>
+  {% endif %}
+
+  <div class="grid gap-7 max-w-[900px] mx-auto" style="grid-template-columns: repeat({{ section.settings.logos_per_row }}, 1fr);">
+    {% for block in section.blocks %}
+      {% if block.settings.client_logo %}
+        <div class="flex justify-center max-h-16">
+          <img src="{{ block.settings.client_logo | img_url: 'medium' }}" width="" height="" alt="{{ block.settings.logo_alt_text | escape }}" class="cursor-pointer h-auto">
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Client Logos",
+  "settings": [
+    {
+        "type": "checkbox",
+        "id": "show_heading_text",
+        "label": "Show heading text",
+        "default": true
+    },
+    {
+        "type": "text",
+        "id": "title_testi",
+        "label": "title",
+        "default": "Brands We Carry"
+    },
+    {
+      "type": "number",
+      "id": "logos_per_row",
+      "label": "Logos per row",
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Client Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "client_logo",
+          "label": "Logo"
+        },
+        {
+          "type": "text",
+          "id": "logo_alt_text",
+          "label": "Alt text for logo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Client Logos",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

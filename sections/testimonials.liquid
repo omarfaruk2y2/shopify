@@ -1,0 +1,162 @@
+
+    
+<div class="testimonials-section py-32 overflow-hidden">
+    <div class="w-full">
+
+      {% if section.settings.show_heading_text %}
+        <h1 class="text-[#423328] text-center text-5xl font-normal font-gambetta -tracking-[1.92px] mb-14">
+          {{ section.settings.title_testi }}
+        </h1>
+      {% endif %}
+
+        <!-- Swiper -->
+        <div class="testimonials-slider">
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              <div class="swiper-slide py-12 px-10 bg-[#F1EDE4]">
+                    <div class="flex gap-7">
+                        <div class="w-[135px]">
+                            {% if block.settings.image %}
+                                <img class="w-[135px] h-[110px] rounded-full object-cover" height="" width="" src="{{ block.settings.image | img_url: '300x300' }}" alt="{{ block.settings.name }}">
+                            {% endif %}
+                        </div>
+                    
+                        <div class="w-full">
+                            
+                            <div class="testimonial-rating text-[#CA473E]">
+                                {% for i in (1..block.settings.rating) %}
+                                    <span class="text-xl font-extrabold">★</span>
+                                {% endfor %}
+                            </div>
+
+                            <p class="text-[#423328] text-lg font-generalSans font-normal mb-4 mt-5">{{ block.settings.content }}</p>
+                            <p class="font-medium font-generalSans text-[#423328] text-lg">{{ block.settings.name }}</p>
+                            <p class="text-[#423328] font-normal font-generalSans text-base">{{ block.settings.location }}</p>
+                            
+                        </div>
+                    </div>
+
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="flex justify-center mt-14">
+            <!-- Button -->
+            <a href="{{ section.settings.button_link | default: '#' }}" class="bg-[#9D744D] text-[#FAF6EE] font-medium text-base font-generalSans uppercase px-12 py-3 hover:bg-black transition">
+                {{ section.settings.button_text }}
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% schema %}
+        {
+          "name": "Testimonials",
+          "settings": [
+            {
+                "type": "checkbox",
+                "id": "show_heading_text",
+                "label": "Show heading text",
+                "default": true
+            },
+            {
+                "type": "text",
+                "id": "title_testi",
+                "label": "title",
+                "default": "Satisfaction From Customers"
+            },
+            {
+                "type": "text",
+                "id": "button_text",
+                "label": "Button Text",
+                "default": "Shop exclusive"
+            },
+            {
+                "type": "url",
+                "id": "button_link",
+                "label": "Button Link"
+            }
+          ],
+          "blocks": [
+            {
+              "type": "testimonial",
+              "name": "Testimonial",
+              "settings": [
+                {
+                  "type": "image_picker",
+                  "id": "image",
+                  "label": "Customer Image"
+                },
+                {
+                  "type": "text",
+                  "id": "content",
+                  "label": "Testimonial Content",
+                  "default": "This is a great product!"
+                },
+                {
+                  "type": "text",
+                  "id": "name",
+                  "label": "Customer Name",
+                  "default": "John Doe"
+                },
+                {
+                  "type": "text",
+                  "id": "location",
+                  "label": "Customer Location",
+                  "default": "New York, USA"
+                },
+                {
+                  "type": "range",
+                  "id": "rating",
+                  "label": "Rating",
+                  "min": 1,
+                  "max": 5,
+                  "default": 5
+                }
+              ]
+            }
+          ],
+          "presets": [
+            {
+              "name": "Testimonials",
+              "category": "Custom"
+            }
+          ]
+        }
+{% endschema %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const swiper_testi = new Swiper('.testimonials-slider', {
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      speed: 800,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      centeredSlides: true,
+      slidesPerView: 1,
+      spaceBetween: 20,
+      breakpoints: {
+        640: {
+          slidesPerView: 1,
+          spaceBetween: 24,
+        },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 24,
+        },
+        1024: {
+          slidesPerView: 2.5,
+          spaceBetween: 24,
+        },
+      },
+    });
+  });
+</script>

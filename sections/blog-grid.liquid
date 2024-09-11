@@ -1,11 +1,12 @@
 <div class="home-blog-widget py-32">
     <div class="max-w-[1600px] mx-auto">
-      <!-- More Articles Button -->
+      
       {% if section.settings.show_heading_text %}
         <h1 class="text-[#423328] text-center text-5xl font-normal font-gambetta -tracking-[1.92px] mb-14">
           {{ section.settings.blog_heading_text }}
         </h1>
       {% endif %}
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {% if section.settings.blog != blank %}
                 {% for article in blogs[section.settings.blog].articles limit: section.settings.number_of_blog_posts %}

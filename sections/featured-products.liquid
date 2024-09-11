@@ -1,0 +1,139 @@
+<div class="max-w-[1600px] mx-auto py-32">
+
+    {% if section.settings.show_heading_text %}
+        <h1 class="text-[#423328] text-center text-5xl font-normal font-gambetta -tracking-[1.92px] mb-14">
+            {{ section.settings.title_testi }}
+        </h1>
+    {% endif %}
+
+    <div class="product-tabs w-full">
+    <!-- Tab Headers -->
+    <ul class="tab-list flex justify-center gap-10">
+        <li class="tab-item active cursor-pointer text-base font-generalSans font-medium text-[#8C8177] hover:text-[#423328]" data-tab="best-sellers">Best Sellers</li>
+        <li class="tab-item cursor-pointer text-base font-generalSans font-medium text-[#8C8177] hover:text-[#423328]" data-tab="new-arrivals">New Arrivals</li>
+        <li class="tab-item cursor-pointer text-base font-generalSans font-medium text-[#8C8177] hover:text-[#423328]" data-tab="on-sale">On Sale</li>
+    </ul>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content mt-10">
+
+    <!-- Best Sellers Tab -->
+    <div id="best-sellers" class="tab-panel active grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% if collections.best_sellers.products.size > 0 %}
+        {% for product in collections.best_sellers.products %}
+            {% render 'product-item', product: product %}
+        {% endfor %}
+        {% else %}
+        <p class="col-span-full text-center text-gray-500">No products available in this collection best_sellers.</p>
+        {% endif %}
+    </div>
+
+    <!-- New Arrivals Tab -->
+    <div id="new-arrivals" class="tab-panel hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% if collections.new_arrivals.products.size > 0 %}
+        {% for product in collections.new_arrivals.products %}
+            {% render 'product-item', product: product %}
+        {% endfor %}
+        {% else %}
+        <p class="col-span-full text-center text-gray-500">No products available in this collection.</p>
+        {% endif %}
+    </div>
+
+    <!-- On Sale Tab -->
+    <div id="on-sale" class="tab-panel hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% if collections.on_sale.products.size > 0 %}
+        {% for product in collections.on_sale.products %}
+            {% render 'product-item', product: product %}
+        {% endfor %}
+        {% else %}
+        <p class="col-span-full text-center text-gray-500">No products available in this collection.</p>
+        {% endif %}
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+{% schema %}
+    {
+      "name": "Featured Products",
+      "settings": [
+        {
+            "type": "checkbox",
+            "id": "show_heading_text",
+            "label": "Show heading text",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "title_testi",
+            "label": "title",
+            "default": "Explore Featured Products"
+        },
+        {
+          "type": "header",
+          "content": "Featured Products"
+        },
+        {
+          "type": "text",
+          "id": "best_selling_title",
+          "label": "Best Selling Title",
+          "default": "Best Selling"
+        },
+        {
+          "type": "text",
+          "id": "new_arrivals_title",
+          "label": "New Arrivals Title",
+          "default": "New Arrivals"
+        },
+        {
+          "type": "text",
+          "id": "on_sale_title",
+          "label": "On Sale Title",
+          "default": "On Sale"
+        },
+        {
+          "type": "text",
+          "id": "brands_title",
+          "label": "Brands Title",
+          "default": "Brands"
+        }
+      ],
+      "presets": [
+        {
+          "name": "Featured Products",
+          "category": "Custom"
+        }
+      ]
+    }
+    {% endschema %}
+    
+    <script>
+        document.querySelectorAll('.tab-item').forEach(item => {
+          item.addEventListener('click', function() {
+            // Remove active class from all tab headers
+            document.querySelectorAll('.tab-item').forEach(tab => {
+              tab.classList.remove('border-blue-500', 'text-blue-500', 'active');
+            });
+            // Add active class to the clicked tab
+            this.classList.add('border-blue-500', 'text-blue-500', 'active');
+      
+            // Hide all tab panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+              panel.classList.add('hidden');
+            });
+      
+            // Show the tab content that corresponds to the clicked tab
+            const tab = this.getAttribute('data-tab');
+            document.getElementById(tab).classList.remove('hidden');
+          });
+        });
+      </script>
+      
+      
+      
