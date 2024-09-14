@@ -65,6 +65,16 @@
         "title": "Best Selling Products"
       }
     },
+    "banner_one_cpBBVM": {
+      "type": "banner-one",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/banner-image_1.png",
+        "title": "The Magic of Arabian Perfume",
+        "subtitle": "Free home delivery on orders over $200. Don’t miss discount.",
+        "button_text": "Shop exclusive",
+        "button_link": ""
+      }
+    },
     "testimonials_CTCJ6y": {
       "type": "testimonials",
       "blocks": {
@@ -198,16 +208,6 @@
         "logos_per_row": 4
       }
     },
-    "banner_one_cpBBVM": {
-      "type": "banner-one",
-      "settings": {
-        "image": "shopify:\/\/shop_images\/banner-image_1.png",
-        "title": "The Magic of Arabian Perfume",
-        "subtitle": "Free home delivery on orders over $200. Don’t miss discount.",
-        "button_text": "Shop exclusive",
-        "button_link": ""
-      }
-    },
     "blog_grid_tHLfQR": {
       "type": "blog-grid",
       "settings": {
@@ -229,9 +229,9 @@
     "product_collection_qbxGrm",
     "featured_products_TCGzVR",
     "best_sell_products_ckkEtr",
+    "banner_one_cpBBVM",
     "testimonials_CTCJ6y",
     "client_logos_KYj8yk",
-    "banner_one_cpBBVM",
     "blog_grid_tHLfQR"
   ]
 }
