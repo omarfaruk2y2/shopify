@@ -15,20 +15,50 @@
             {% if collections['best-selling'].products.size > 0 %}
             {% for product in collections['best-selling'].products %}
                 <div class="swiper-slide relative">
+
+                  <div class="product-card relative group">
                     <!-- Discount Badge -->
                     {% if product.compare_at_price > product.price %}
-                        <div class="absolute top-5 left-5 bg-[#CA473E] text-[#FAF6EE] text-sm font-medium font-generalSans uppercase py-1 px-3 rounded-3xl">
-                        -{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round: 0 }}%
-                        </div>
+                      <div class="absolute top-5 left-5 z-20 bg-[#CA473E] text-[#FAF6EE] text-sm font-medium font-generalSans uppercase py-1 px-3 rounded-3xl">
+                      -{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round: 0 }}%
+                      </div>
                     {% endif %}
-
+                
                     <!-- Product Image -->
-                    <a href="{{ product.url }}">
-                        <img class="w-full max-h-96 h-full bg-[#F1EDE4] mb-5" width="" height="" src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.title }}">
+                    
+                        <div class="relative">
+                          <div class="py-20 h-[390px] bg-[#F1EDE4] mb-5">
+                            <a href="{{ product.url }}">
+                              <img class="h-[211px] w-[211px] mx-auto bg-[#F1EDE4]" width="" height="" src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.title }}">
+                            </a>
+                          </div>
+                          <!-- Add to Cart Form -->
+                          <div class="add-to-cart-container mt-4">
+                            <form method="post" action="/cart/add">
+                                <!-- For Single Variant -->
+                                {% if product.variants.size == 1 %}
+                                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                                {% else %}
+                                    <!-- For Multiple Variants -->
+                                <select name="id" class="w-full border mb-2 py-3 px-3">
+                                    {% for variant in product.variants %}
+                                    <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% endif %}
+                
+                                <button type="submit" class="w-full bg-[#9D744D] text-[#FAF6EE] uppercase font-generalSans font-medium py-3 px-4 hover:bg-black">
+                                  Add to Cart
+                                </button>
+                            </form>
+                          </div>
+                
+                        </div>
                         
                         <!-- Product Title -->
-                        <h3 class="text-lg font-medium font-generalSans text-[#423328] mb-1">{{ product.title }}</h3>
-                        
+                        <a href="{{ product.url }}">
+                          <h3 class="text-lg font-medium font-generalSans text-[#423328] mb-1">{{ product.title }}</h3>
+                        </a>
                         <!-- Product Price -->
                         <p class="text-base font-generalSans font-semibold {% if product.compare_at_price > product.price %}text-[#423328]{% else %}text-[#423328]{% endif %}">
                         {{ product.price | money }}
@@ -36,7 +66,8 @@
                             <span class="line-through text-[#B0A89F] text-base">{{ product.compare_at_price | money }}</span>
                         {% endif %}
                         </p>
-                    </a>
+                  </div>
+                    
                 </div>
             {% endfor %}
             {% else %}

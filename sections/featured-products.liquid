@@ -7,49 +7,68 @@
     {% endif %}
 
     <div class="product-tabs w-full">
-    <!-- Tab Headers -->
-    <ul class="tab-list flex justify-center gap-10">
-        <li class="tab-item active cursor-pointer text-base font-generalSans font-medium text-[#8C8177] hover:text-[#423328]" data-tab="best-sellers">Best Sellers</li>
-        <li class="tab-item cursor-pointer text-base font-generalSans font-medium text-[#8C8177] hover:text-[#423328]" data-tab="new-arrivals">New Arrivals</li>
-        <li class="tab-item cursor-pointer text-base font-generalSans font-medium text-[#8C8177] hover:text-[#423328]" data-tab="on-sale">On Sale</li>
-    </ul>
+      <!-- Tab Headers -->
+      <ul class="tab-list flex justify-center gap-10">
+          <li class="tab-item active cursor-pointer text-base font-generalSans font-medium text-[#8C8177] hover:text-[#423328]" data-tab="best-sellers">Best Sellers</li>
+          <li class="tab-item cursor-pointer text-base font-generalSans font-medium text-[#8C8177] hover:text-[#423328]" data-tab="new-arrivals">New Arrivals</li>
+          <li class="tab-item cursor-pointer text-base font-generalSans font-medium text-[#8C8177] hover:text-[#423328]" data-tab="on-sale">On Sale</li>
+      </ul>
     </div>
 
     <!-- Tab Content -->
     <div class="tab-content mt-10">
 
-    <!-- Best Sellers Tab -->
-    <div id="best-sellers" class="tab-panel active grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- Best Sellers Tab -->
+      <div id="best-sellers" class="tab-panel active grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {% if collections.best_sellers.products.size > 0 %}
         {% for product in collections.best_sellers.products %}
-            {% render 'product-item', product: product %}
+            {% if forloop.index <= 8 %}
+                {% render 'product-item', product: product %}
+            {% else %}
+                {% break %}
+            {% endif %}
         {% endfor %}
         {% else %}
         <p class="col-span-full text-center text-gray-500">No products available in this collection best_sellers.</p>
         {% endif %}
+      </div>
+
+
+
+
+      <!-- New Arrivals Tab -->
+      <div id="new-arrivals" class="tab-panel hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {% if collections.new_arrivals.products.size > 0 %}
+          {% for product in collections.new_arrivals.products %}
+            {% if forloop.index <= 8 %}
+              {% render 'product-item', product: product %}
+            {% else %}
+                {% break %}
+            {% endif %}
+          {% endfor %}
+          {% else %}
+          <p class="col-span-full text-center text-gray-500">No products available in this collection.</p>
+          {% endif %}
+      </div>
+
+      <!-- On Sale Tab -->
+      <div id="on-sale" class="tab-panel hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {% if collections.on_sale.products.size > 0 %}
+          {% for product in collections.on_sale.products %}
+            {% if forloop.index <= 8 %}
+              {% render 'product-item', product: product %}
+            {% else %}
+                {% break %}
+            {% endif %}
+          {% endfor %}
+          {% else %}
+          <p class="col-span-full text-center text-gray-500">No products available in this collection.</p>
+          {% endif %}
+      </div>
     </div>
 
-    <!-- New Arrivals Tab -->
-    <div id="new-arrivals" class="tab-panel hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {% if collections.new_arrivals.products.size > 0 %}
-        {% for product in collections.new_arrivals.products %}
-            {% render 'product-item', product: product %}
-        {% endfor %}
-        {% else %}
-        <p class="col-span-full text-center text-gray-500">No products available in this collection.</p>
-        {% endif %}
-    </div>
-
-    <!-- On Sale Tab -->
-    <div id="on-sale" class="tab-panel hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {% if collections.on_sale.products.size > 0 %}
-        {% for product in collections.on_sale.products %}
-            {% render 'product-item', product: product %}
-        {% endfor %}
-        {% else %}
-        <p class="col-span-full text-center text-gray-500">No products available in this collection.</p>
-        {% endif %}
-    </div>
+    <div class="flex justify-center mt-14">
+      <a href="/collections/all" class="inline-block bg-transparent border border-[#423328] text-[#423328] text-base font-generalSans uppercase font-medium py-3 px-12 hover:bg-white transition">Explore all products</a>
     </div>
 </div>
 
@@ -78,30 +97,6 @@
         {
           "type": "header",
           "content": "Featured Products"
-        },
-        {
-          "type": "text",
-          "id": "best_selling_title",
-          "label": "Best Selling Title",
-          "default": "Best Selling"
-        },
-        {
-          "type": "text",
-          "id": "new_arrivals_title",
-          "label": "New Arrivals Title",
-          "default": "New Arrivals"
-        },
-        {
-          "type": "text",
-          "id": "on_sale_title",
-          "label": "On Sale Title",
-          "default": "On Sale"
-        },
-        {
-          "type": "text",
-          "id": "brands_title",
-          "label": "Brands Title",
-          "default": "Brands"
         }
       ],
       "presets": [
@@ -113,7 +108,7 @@
     }
     {% endschema %}
     
-    <script>
+  <script>
         document.querySelectorAll('.tab-item').forEach(item => {
           item.addEventListener('click', function() {
             // Remove active class from all tab headers
@@ -133,7 +128,7 @@
             document.getElementById(tab).classList.remove('hidden');
           });
         });
-      </script>
+</script>
       
       
       
