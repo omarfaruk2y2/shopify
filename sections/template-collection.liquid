@@ -1,21 +1,63 @@
-<div class="">
+<div>
     {% paginate collection.products by section.settings.number_of_products_per_page %}
         <div class="bg-[#423328] py-28">
             <h1 class="text-center text-white font-normal text-[74px] leading-[78px] -tracking-[2.96px]">{{ collection.title }}</h1>
         </div>
 
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {% for product in collection.products %}
-                    {%  render 'product-card', product_product: product %}
-                    
-                {% else %} 
-                   <p>There are no products inside of this collection</p>
-                {% endfor %}
-            
-            </div>
+        <div class="max-w-[1600px] mx-auto px-6 pt-32">
+            <div class="">
+                <div class="flex flex-row gap-10">
+                    <div class="max-w-[350px] w-full p-4">
+                        <h1 class="text-3xl text-[#423328] font-gambetta font-normal -tracking-[1.2px]">Filters</h1>
+                        <div class="">
 
-        </div>{%  render 'pagination', pagination: paginate %}
+                        </div>
+                    </div>
+                    <div class="w-full">
+
+                        <div class="flex justify-between items-center mb-6">
+
+                            <div class="text-[#423328] text-lg font-generalSans font-normal">
+                                {% assign start_index = paginate.current_offset | plus: 1 %}
+                                {% assign end_index = paginate.current_offset | plus: paginate.page_size %}
+                                {% if end_index > paginate.items %}
+                                    {% assign end_index = paginate.items %}
+                                {% endif %}
+                                Showing {{ start_index }} to {{ end_index }} of {{ paginate.items }} results
+                            </div>
+
+                            <!-- Sorting dropdown -->
+                            <div>
+                                <form method="get">
+                                    <select class="bg-transparent text-[#423328] text-base font-generalSans font-medium" name="sort_by" id="sort_by" onchange="this.form.submit()">
+                                        <option class="text-[#423328] text-base font-generalSans font-medium" value="manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>Default shorting</option>
+                                        <option class="text-[#423328] text-base font-generalSans font-medium" value="best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+                                        <option class="text-[#423328] text-base font-generalSans font-medium" value="title-ascending" {% if collection.sort_by == 'title-ascending' %}selected{% endif %}>Alphabetically, A-Z</option>
+                                        <option class="text-[#423328] text-base font-generalSans font-medium" value="title-descending" {% if collection.sort_by == 'title-descending' %}selected{% endif %}>Alphabetically, Z-A</option>
+                                        <option class="text-[#423328] text-base font-generalSans font-medium" value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>Price, low to high</option>
+                                        <option class="text-[#423328] text-base font-generalSans font-medium" value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>Price, high to low</option>
+                                        <option class="text-[#423328] text-base font-generalSans font-medium" value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>Date, new to old</option>
+                                        <option class="text-[#423328] text-base font-generalSans font-medium" value="created-ascending" {% if collection.sort_by == 'created-ascending' %}selected{% endif %}>Date, old to new</option>
+                                    </select>
+                                </form>
+                            </div>
+
+                        </div>
+
+                        <!-- Products section -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                            {% for product in collection.products %}
+                                {% render 'product-card', product_product: product %}
+                            {% else %}
+                                <p>There are no products inside of this collection</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+
+        {% render 'pagination', pagination: paginate %}
     {% endpaginate %}
 </div>
 
@@ -23,12 +65,12 @@
 {
     "name": "Template Collection",
     "settings": [
-            {
-                "type": "number",
-                "id": "number_of_products_per_page",
-                "default": 6,
-                "label": "Number of products per page"
-            }
-        ]
+        {
+            "type": "number",
+            "id": "number_of_products_per_page",
+            "default": 9,
+            "label": "Number of products per page"
+        }
+    ]
 }
 {% endschema %}

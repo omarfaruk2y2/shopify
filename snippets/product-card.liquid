@@ -1,20 +1,54 @@
-<div class="w-full py-6 px-3">
-    <div class="border bg-white shadow-lg rounded-lg overflow-hidden">
-        <a href="{{ product_product.url }}">
-            {%  if product_product.featured_image %} 
-                <div class="h-80 overflow-hidden">
-                    <img src="{{ product_product.featured_image |  img_url: 'medium' }}" class="w-full h-full object-cover transition duration-1000 ease-in-out hover:scale-105 transform" height="" width="" alt="{{ product_product.featured_image.alt }}">
-                </div>
-            {% else %}
-                {{ 'product-1' |  placeholder_svg_tag: 'w-full h-full object-cover bg-[#F6F0E6]' }}
-            {% endif %}
-        </a>
-        <div class="flex flex-col p-4">
-            <span class="text-sm text-[#9D744D]">{{ product_product.vendor }}</span>
-            
-            <a href="{{ product_product.url }}" class="text-[#423328] uppercase font-medium">{{ product_product.title }}</a>
-                        
-            <p class="text-[#9D744D]">{{ product_product.price | money }}</p>
+<div class="product-card relative group">
+
+    <!-- Discount Badge -->
+    {% if product_product.compare_at_price > product_product.price %}
+      <div class="absolute top-5 left-5 z-20 bg-[#CA473E] text-[#FAF6EE] text-sm font-medium font-generalSans uppercase py-1 px-3 rounded-3xl">
+      -{{ product_product.compare_at_price | minus: product_product.price | times: 100.0 | divided_by: product_product.compare_at_price | round: 0 }}%
+      </div>
+    {% endif %}
+
+        <!-- Product Image -->
+        <div class="relative">
+          <div class="py-20 h-[390px] bg-[#F1EDE4] mb-5">
+            <a href="{{ product_product.url }}">
+              <img class="h-[211px] w-[211px] mx-auto bg-[#F1EDE4]" width="" height="" src="{{ product_product.featured_image | img_url: 'large' }}" alt="{{ product_product.title }}">
+            </a>
+          </div>
+          <!-- Add to Cart Form -->
+          <div class="add-to-cart-container mt-4">
+            <form method="post" action="/cart/add">
+                <!-- For Single Variant -->
+                {% if product_product.variants.size == 1 %}
+                    <input type="hidden" name="id" value="{{ product_product.variants.first.id }}">
+                {% else %}
+                    <!-- For Multiple Variants -->
+                <select name="id" class="w-full border mb-2 py-3 px-3">
+                    {% for variant in product_product.variants %}
+                    <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+
+                <button type="submit" class="w-full bg-[#9D744D] text-[#FAF6EE] uppercase font-generalSans font-medium py-3 px-4 hover:bg-black">
+                  Add to Cart
+                </button>
+            </form>
+          </div>
+
         </div>
-    </div>
+        
+        <!-- Product Title -->
+        <a href="{{ product_product.url }}">
+          <h3 class="text-lg font-medium font-generalSans text-[#423328] mb-1">{{ product_product.title }}</h3>
+        </a>
+        <!-- Product Price -->
+        <p class="text-base font-generalSans font-semibold {% if product_product.compare_at_price > product_product.price %}text-[#423328]{% else %}text-[#423328]{% endif %}">
+        {{ product_product.price | money }}
+        {% if product_product.compare_at_price > product_product.price %}
+            <span class="line-through text-[#B0A89F] text-base">{{ product_product.compare_at_price | money }}</span>
+        {% endif %}
+        </p>
+    
 </div>
+
+
