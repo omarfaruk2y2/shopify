@@ -97,12 +97,23 @@
             "location": "New York, USA",
             "rating": 5
           }
+        },
+        "testimonial_8crEyz": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Ellipse_11.png",
+            "content": "This is a great product!",
+            "name": "John Doe",
+            "location": "New York, USA",
+            "rating": 5
+          }
         }
       },
       "block_order": [
         "testimonial_eb9MBY",
         "testimonial_XmaiM3",
-        "testimonial_aKEVfY"
+        "testimonial_aKEVfY",
+        "testimonial_8crEyz"
       ],
       "settings": {
         "show_heading_text": true,
