@@ -1,7 +1,11 @@
 <div class="flex flex-col items-center my-8">
-  <h1 class="text-center text-3xl">{{ section.settings.title }}</h1>
+  {% if section.settings.show_heading_text %}
+    <h1 class="text-[#423328] text-center text-5xl font-normal font-gambetta -tracking-[1.92px] mb-14">
+        {{ section.settings.title_testi }}
+    </h1>
+  {% endif %}
 
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-[1600px] w-full mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       {%  for product in section.settings.featured_collection.products limit: section.settings.number_of_products_to_show %} 
         {%  render 'product-card', product_product: product %}
@@ -19,10 +23,16 @@
   "name": "Featured Collection",
   "settings": [
       {
+        "type": "checkbox",
+        "id": "show_heading_text",
+        "label": "Show heading text",
+        "default": true
+      },
+      {
         "type": "text",
-        "id": "title",
-        "default": "Featured Collection",
-        "label": "Title"
+        "id": "title_testi",
+        "label": "title",
+        "default": "Explore Featured Products"
       },
       {
         "type": "collection",
